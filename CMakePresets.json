@@ -1,28 +1,49 @@
 {
-    "version": 8,
-    "configurePresets": [
-        {
-            "name": "linux",
-            "hidden": false,
-            "displayName": "GCC on Linux",
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "installDir": "$env{JULIA_DEPOT_PATH}/dev/libcxxwrap_julia_jll/override",
-            "cacheVariables": {
-                "CMAKE_INSTALL_PREFIX": "$env{JULIA_DEPOT_PATH}/dev/libcxxwrap_julia_jll/override",
-                "CMAKE_C_COMPILER": "/usr/bin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
-                "CMAKE_BUILD_TYPE": "Release",
-                "JLCXX_BUILD_EXAMPLES": "OFF",
-                "JLCXX_BUILD_TESTS": "OFF"
-            }
-        }
-    ],
-    "buildPresets": [
-        {
-            "name": "linux",
-            "displayName": "GCC on Linux",
-            "configurePreset": "linux"
-        }
-    ]
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "linux",
+      "hidden": false,
+      "displayName": "GCC on Linux",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "$env{JULIA_DEPOT_PATH}/dev/libcxxwrap_julia_jll/override",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "$env{JULIA_DEPOT_PATH}/dev/libcxxwrap_julia_jll/override",
+        "CMAKE_C_COMPILER": "/usr/bin/gcc",
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+        "CMAKE_BUILD_TYPE": "Release",
+        "JLCXX_BUILD_EXAMPLES": "OFF",
+        "JLCXX_BUILD_TESTS": "OFF"
+      }
+    },
+    {
+      "name": "macos",
+      "hidden": false,
+      "displayName": "Clang on MacOS",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "$env{HOME}/.julia/dev/libcxxwrap_julia_jll/override",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "$env{HOME}/.julia/dev/libcxxwrap_julia_jll/override",
+        "CMAKE_C_COMPILER": "/usr/bin/clang",
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+        "CMAKE_BUILD_TYPE": "Release",
+        "JLCXX_BUILD_EXAMPLES": "OFF",
+        "JLCXX_BUILD_TESTS": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "linux",
+      "displayName": "GCC on Linux",
+      "configurePreset": "linux"
+    },
+    {
+      "name": "macos",
+      "displayName": "Clang on MacOS",
+      "configurePreset": "macos"
+    }
+  ]
 }
