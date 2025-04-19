@@ -60,7 +60,7 @@ public:
   template <class OtherPointedT, class OtherCppT>
   array_iterator_base(array_iterator_base<OtherPointedT, OtherCppT> const& other) : m_ptr(other.m_ptr) {}
 
-  auto operator*() -> decltype(ValueExtractor<PointedT,CppT>()(m_ptr))
+  auto operator*() const -> decltype(ValueExtractor<PointedT,CppT>()(m_ptr))
   {
     return ValueExtractor<PointedT,CppT>()(m_ptr);
   }
@@ -133,8 +133,18 @@ public:
     JL_GC_PUSH1(&m_array);
     const size_t pos = jl_array_len(m_array);
     jl_array_grow_end(m_array, 1);
-    jl_value_t* jval = box<ValueT>(val);
-    jl_array_ptr_set(m_array, pos, jval);
+    if(jlcxx::IsMirroredType<ValueT>::value && !std::is_pointer<ValueT>::value)
+    {
+      // Directly set the data if our array contains a mirrored non-pointer type
+      ValueT* rawarray = jlcxx_array_data<ValueT>(wrapped());
+      rawarray[pos] = val;
+    }
+    else
+    {
+      // For boxed types we need to use jl_array_ptr_set
+      jl_value_t* jval = box<ValueT>(val);
+      jl_array_ptr_set(m_array, pos, jval);
+    }
     JL_GC_POP();
   }
 
